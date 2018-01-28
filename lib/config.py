@@ -4,6 +4,7 @@
 import sys
 import os
 from paccoin_config import PaccoinConfig
+from pathlib import Path
 
 default_sentinel_config = os.path.normpath(
     os.path.join(os.path.dirname(__file__), '../sentinel.conf')
@@ -15,11 +16,13 @@ min_paccoind_proto_version_with_sentinel_ping = 70207
 
 
 def get_paccoin_conf():
-    home = os.environ.get('HOME')
+    home = str(Path.home())
 
     paccoin_conf = os.path.join(home, ".paccoincore/paccoin.conf")
     if sys.platform == 'darwin':
         paccoin_conf = os.path.join(home, "Library/Application Support/PaccoinCore/paccoin.conf")
+    if sys.platform == 'win32':
+        paccoin_conf = os.path.join(home, "AppData/Roaming/PaccoinCore/paccoin.conf")
 
     paccoin_conf = sentinel_cfg.get('paccoin_conf', paccoin_conf)
 
